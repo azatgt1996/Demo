@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.javamaster.demo.ui.info.UserInfoFragment"
+        android:label="@string/menu_user_info"
+        tools:layout="@layout/fragment_user_info" />
+
+    <fragment
+        android:id="@+id/nav_phones"
+        android:name="com.javamaster.demo.ui.phones.PhonesFragment"
+        android:label="@string/menu_phones"
+        tools:layout="@layout/fragment_phones" >
+        <action
+            android:id="@+id/action_nav_phones_to_nav_phone_crud"
+            app:destination="@id/nav_phone_crud" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_tools"
+        android:name="com.javamaster.demo.ui.tools.ToolsFragment"
+        android:label="@string/menu_tools"
+        tools:layout="@layout/fragment_tools" />
+
+    <fragment
+        android:id="@+id/nav_phone_crud"
+        android:name="com.javamaster.demo.PhoneCRUDFragment"
+        android:label="@string/menu_phone_crude"
+        tools:layout="@layout/fragment_phone_crud" >
+        <argument
+            android:name="phone"
+            app:argType="string"
+            android:defaultValue=" " />
+    </fragment>
+</navigation>
