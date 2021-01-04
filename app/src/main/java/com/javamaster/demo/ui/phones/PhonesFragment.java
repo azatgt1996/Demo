@@ -1,10 +1,11 @@
 package com.javamaster.demo.ui.phones;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,14 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
-        phonesViewModel.init();
+
+        if (!phonesViewModel.isInitialized()) {
+            phonesViewModel.setDbManager(mContext);
+            phonesViewModel.openDb();
+            phonesViewModel.init();
+            phonesViewModel.closeDb();
+        }
+
         View root = inflater.inflate(R.layout.fragment_phones, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
@@ -87,7 +95,17 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action) {
-            phonesViewModel.deleteAll();
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(R.string.message_delete);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    phonesViewModel.openDb();
+                    phonesViewModel.deleteAll();
+                    phonesViewModel.closeDb();
+                }
+            });
+            builder.setNegativeButton("No", null);
+            builder.show();
         }
         return super.onOptionsItemSelected(item);
     }
