@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.javamaster.demo.model.Model;
@@ -66,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button registrationButton = findViewById(R.id.registerBtn);
-        registrationButton.setOnClickListener(new View.OnClickListener() {
+        TextView registrationTextView = findViewById(R.id.textView_registration);
+        registrationTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -76,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button forgotPasswordButton = findViewById(R.id.forgotPasswordBtn);
-        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+        TextView recoveryTextView = findViewById(R.id.textView_recovery);
+        recoveryTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

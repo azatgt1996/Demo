@@ -17,7 +17,7 @@
     <string name="recovery">Recovery</string>
     <string name="registration">Registration</string>
     <string name="login">Login</string>
-    <string name="message">Are you sure you want to exit?</string>
+    <string name="message">Are you sure you want to logout?</string>
     <string name="menu_phone_crude">Phone</string>
     <string name="message_delete">Are you sure?</string>
 </resources>

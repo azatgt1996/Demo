@@ -60,6 +60,7 @@ public class PhoneCRUDFragment extends Fragment implements FabButtonClick {
                     changedPhone = editText.getText().toString();
                     if (!phonesViewModel.changeItem(phone, changedPhone)) {
                         Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
+                        editText.setText(phone);
                     }
                 }
             }
