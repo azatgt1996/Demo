@@ -38,7 +38,7 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
         if (!phonesViewModel.isInitialized()) {
             phonesViewModel.setDbManager(mContext);
             phonesViewModel.openDb();
-            phonesViewModel.init();
+            phonesViewModel.init(getActivity());
             phonesViewModel.closeDb();
         }
 

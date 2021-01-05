@@ -26,21 +26,21 @@ public class UserInfoFragment extends Fragment {
         final TextView txtView_name = root.findViewById(R.id.txtView_name);
         final TextView txtView_email = root.findViewById(R.id.txtView_email);
 
-        userInfoViewModel.getLogin().observe(this, new Observer<String>() {
+        userInfoViewModel.getLogin().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 txtView_login.setText(s);
             }
         });
 
-        userInfoViewModel.getName().observe(this, new Observer<String>() {
+        userInfoViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 txtView_name.setText(s);
             }
         });
 
-        userInfoViewModel.getEmail().observe(this, new Observer<String>() {
+        userInfoViewModel.getEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 txtView_email.setText(s);

@@ -1,13 +1,17 @@
 package com.javamaster.demo.ui.phones;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.javamaster.demo.db.DbManager;
+import com.javamaster.demo.model.Model;
+import com.javamaster.demo.model.api.AbstractAPIListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PhonesViewModel extends ViewModel {
 
@@ -24,9 +28,16 @@ public class PhonesViewModel extends ViewModel {
         dbManager = new DbManager(context);
     }
 
-    public void init() {
+    public void init(Activity activity) {
         list = new ArrayList<>();
-        list = (ArrayList<String>) dbManager.getAllPhones();
+        //list = (ArrayList<String>) dbManager.getAllPhones();
+        final Model model = Model.getInstance(activity.getApplication());
+        model.loadPhones(new AbstractAPIListener(){
+            @Override
+            public void onPhonesLoaded(List<String> phones) {
+                list = (ArrayList<String>) phones;
+            }
+        });
         mList.setValue(list);
         isInitialized = true;
     }

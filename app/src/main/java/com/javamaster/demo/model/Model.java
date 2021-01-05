@@ -33,6 +33,10 @@ public class Model {
         mApi.login(login, password, listener);
     }
 
+    public void loadPhones(APIListener listener) {
+        mApi.loadPhones(listener);
+    }
+
     public User getUser() {
         return mUser;
     }

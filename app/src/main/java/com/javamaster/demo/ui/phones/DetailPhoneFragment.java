@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.javamaster.demo.FabButtonClick;
 import com.javamaster.demo.MainActivity;
 import com.javamaster.demo.R;
-import com.javamaster.demo.ui.phones.PhonesViewModel;
 
 
 public class DetailPhoneFragment extends Fragment implements FabButtonClick {
