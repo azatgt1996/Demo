@@ -64,7 +64,7 @@ public class WebAPI implements API {
 
             // for testing
             JSONObject response = new JSONObject();
-            response.put("name", "Azat Gal");
+            response.put("name", "Maxim Petrov");
             response.put("login", "azatgt");
             response.put("email", "azat12@mail.com");
             response.put("token", "sf45d4f3sert.1842312dfg12ki.ui843x21w");

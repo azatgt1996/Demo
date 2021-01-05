@@ -22,7 +22,7 @@
             android:id="@+id/textRLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your login"
+            android:hint="Login"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,7 +41,7 @@
             android:id="@+id/textREmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your email"
+            android:hint="Email"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 

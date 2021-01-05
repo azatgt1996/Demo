@@ -1,4 +1,4 @@
-package com.javamaster.demo;
+package com.javamaster.demo.ui.phones;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,10 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.javamaster.demo.FabButtonClick;
+import com.javamaster.demo.MainActivity;
+import com.javamaster.demo.R;
 import com.javamaster.demo.ui.phones.PhonesViewModel;
 
 
-public class PhoneCRUDFragment extends Fragment implements FabButtonClick {
+public class DetailPhoneFragment extends Fragment implements FabButtonClick {
 
     private EditText editText;
     private Button deletePhone;
@@ -30,7 +33,7 @@ public class PhoneCRUDFragment extends Fragment implements FabButtonClick {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
 
-        View view = inflater.inflate(R.layout.fragment_phone_crud, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
         ((MainActivity)getActivity()).setListener(this);
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
         phonesViewModel.openDb();
