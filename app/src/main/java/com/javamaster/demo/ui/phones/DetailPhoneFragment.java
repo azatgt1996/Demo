@@ -12,21 +12,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.javamaster.demo.FabButtonClick;
 import com.javamaster.demo.MainActivity;
 import com.javamaster.demo.R;
+import com.javamaster.demo.model.Phone;
 
 
 public class DetailPhoneFragment extends Fragment implements FabButtonClick {
 
-    private EditText editText;
+    private EditText editText_phoneNumber;
+    private TextView textView_phoneId;
     private Button deletePhone;
     private Button changePhone;
     private PhonesViewModel phonesViewModel;
-    private String phone;
-    private String changedPhone;
+    private Phone phone;
+    private Phone changedPhone;
     private Context mContext;
 
     @Override
@@ -37,7 +40,8 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
         phonesViewModel.openDb();
 
-        editText = view.findViewById(R.id.phoneNumber);
+        editText_phoneNumber = view.findViewById(R.id.phoneNumber);
+        textView_phoneId = view.findViewById(R.id.phoneId);
 
         deletePhone = view.findViewById(R.id.button_deletePhone);
         changePhone = view.findViewById(R.id.button_changePhone);
@@ -55,14 +59,16 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
             public void onClick(View v) {
                 if (changePhone.getText().toString().equals("Change")) {
                     changePhone.setText("Save");
-                    editText.setEnabled(true);
+                    editText_phoneNumber.setEnabled(true);
                 } else {
                     changePhone.setText("Change");
-                    editText.setEnabled(false);
-                    changedPhone = editText.getText().toString();
+                    editText_phoneNumber.setEnabled(false);
+                    int id = Integer.parseInt(textView_phoneId.getText().toString());
+                    String phoneNum = editText_phoneNumber.getText().toString();
+                    changedPhone = new Phone(id, phoneNum);
                     if (!phonesViewModel.changeItem(phone, changedPhone)) {
                         Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
-                        editText.setText(phone);
+                        editText_phoneNumber.setText(phone.getPhoneNumber());
                     }
                 }
             }
@@ -73,12 +79,17 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         if (bundle.getBoolean("add")) {
             deletePhone.setVisibility(View.INVISIBLE);
             changePhone.setVisibility(View.INVISIBLE);
-            editText.setEnabled(true);
+            editText_phoneNumber.setEnabled(true);
+            textView_phoneId.setVisibility(View.INVISIBLE);
         } else {
-            phone = bundle.getString("phone");
-            editText.setText(phone);
+            int id = bundle.getInt("phoneId");
+            String phoneNum = bundle.getString("phoneNumber");
+            phone = new Phone(id, phoneNum);
+            editText_phoneNumber.setText(phone.getPhoneNumber());
             deletePhone.setVisibility(View.VISIBLE);
             changePhone.setVisibility(View.VISIBLE);
+            textView_phoneId.setVisibility(View.VISIBLE);
+            textView_phoneId.setText(String.valueOf(phone.getId()));
         }
         return view;
     }
@@ -91,7 +102,9 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
 
     @Override
     public void onFabClicked() {
-        phone = editText.getText().toString();
+        int id = -1;
+        String phoneNum = editText_phoneNumber.getText().toString();
+        phone = new Phone(id, phoneNum);
         if (!phonesViewModel.addItem(phone)) {
             Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
         }

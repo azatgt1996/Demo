@@ -89,14 +89,14 @@ public class WebAPI implements API {
 
     @Override
     public void loadPhones(final APIListener listener) {
-        String url = BASE_URL + "phones";
+        String url = BASE_URL + "api/phones";
 
         try {
             Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        List<String> phones = Phone.getPhones(response);
+                        List<Phone> phones = Phone.getPhones(response);
                         if (listener != null) {
                             listener.onPhonesLoaded(phones);
                         }
@@ -140,12 +140,221 @@ public class WebAPI implements API {
                 jsonArray.put(p1);
                 jsonArray.put(p2);
                 jsonArray.put(p3);
-                List<String> phones = Phone.getPhones(jsonArray);
+                List<Phone> phones = Phone.getPhones(jsonArray);
                 if (listener != null) {
                     listener.onPhonesLoaded(phones);
                 }
             }
         } catch (JSONException e) {
+            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void addPhone(String phoneNumber, final APIListener listener) {
+        String url = BASE_URL + "api/phones";
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("phoneNumber", phoneNumber);
+
+            Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String mes = response.getString("message");
+                        int phoneId = response.getInt("id");
+                        listener.onPhoneAdded(mes, phoneId);
+                    }
+                    catch (JSONException e) {
+                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                }
+            };
+
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, successListener, errorListener) {
+//                @Override
+//                public Map<String, String> getHeaders() {
+//                    Map<String, String> headers = new HashMap<>();
+//                    headers.put("Content-Type", "application/json");
+//                    headers.put("Accept", "application/json");
+//                    headers.put("Authorization", "Bearer " + mUtil.getUserInfo().getToken());
+//                    return headers;
+//                }
+//            };
+//            mRequestQueue.add(request);
+            // for testing
+            {
+                JSONObject response = new JSONObject();
+                response.put("message", "Phone successfully added");
+                response.put("id", 100);
+
+                String mes = response.getString("message");
+                int phoneId = response.getInt("id");
+                listener.onPhoneAdded(mes, phoneId);
+            }
+        }
+        catch (JSONException e) {
+            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void deletePhone(int idPhone, final APIListener listener) {
+        String url = BASE_URL + "api/phones/" + idPhone;
+
+        try {
+            Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String mes = response.getString("message");
+                        listener.onPhoneDeleted(mes);
+                    }
+                    catch (JSONException e) {
+                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                }
+            };
+
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, successListener, errorListener) {
+//                @Override
+//                public Map<String, String> getHeaders() {
+//                    Map<String, String> headers = new HashMap<>();
+//                    headers.put("Content-Type", "application/json");
+//                    headers.put("Accept", "application/json");
+//                    headers.put("Authorization", "Bearer " + mUtil.getUserInfo().getToken());
+//                    return headers;
+//                }
+//            };
+//            mRequestQueue.add(request);
+            // for testing
+            {
+                JSONObject response = new JSONObject();
+                response.put("message", "Phone successfully deleted");
+
+                String mes = response.getString("message");
+                listener.onPhoneDeleted(mes);
+            }
+        }
+        catch (JSONException e) {
+            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void deleteAllPhones(final APIListener listener) {
+        String url = BASE_URL + "api/phones" ;
+
+        try {
+            Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String mes = response.getString("message");
+                        listener.onAllPhonesDeleted(mes);
+                    }
+                    catch (JSONException e) {
+                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                }
+            };
+
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, successListener, errorListener) {
+//                @Override
+//                public Map<String, String> getHeaders() {
+//                    Map<String, String> headers = new HashMap<>();
+//                    headers.put("Content-Type", "application/json");
+//                    headers.put("Accept", "application/json");
+//                    headers.put("Authorization", "Bearer " + mUtil.getUserInfo().getToken());
+//                    return headers;
+//                }
+//            };
+//            mRequestQueue.add(request);
+            // for testing
+            {
+                JSONObject response = new JSONObject();
+                response.put("message", "All phones successfully deleted");
+
+                String mes = response.getString("message");
+                listener.onAllPhonesDeleted(mes);
+            }
+        }
+        catch (JSONException e) {
+            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void updatePhone(int idPhone, String phoneNumber, final APIListener listener) {
+        String url = BASE_URL + "api/phones/" + idPhone;
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("phoneNumber", phoneNumber);
+
+            Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String mes = response.getString("message");
+                        listener.onPhoneUpdated(mes);
+                    }
+                    catch (JSONException e) {
+                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                }
+            };
+
+//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, jsonObject, successListener, errorListener) {
+//                @Override
+//                public Map<String, String> getHeaders() {
+//                    Map<String, String> headers = new HashMap<>();
+//                    headers.put("Content-Type", "application/json");
+//                    headers.put("Accept", "application/json");
+//                    headers.put("Authorization", "Bearer " + mUtil.getUserInfo().getToken());
+//                    return headers;
+//                }
+//            };
+//            mRequestQueue.add(request);
+            // for testing
+            {
+                JSONObject response = new JSONObject();
+                response.put("message", "Phone successfully updated");
+
+                String mes = response.getString("message");
+                listener.onPhoneUpdated(mes);
+            }
+        }
+        catch (JSONException e) {
             Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
         }
     }

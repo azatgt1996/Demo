@@ -37,6 +37,22 @@ public class Model {
         mApi.loadPhones(listener);
     }
 
+    public void addPhone(String phoneNumber, APIListener listener) {
+        mApi.addPhone(phoneNumber, listener);
+    }
+
+    public void deletePhone(int idPhone, APIListener listener) {
+        mApi.deletePhone(idPhone, listener);
+    }
+
+    public void deleteAllPhones(APIListener listener) {
+        mApi.deleteAllPhones(listener);
+    }
+
+    public void updatePhone(int idPhone, String phoneNumber, APIListener listener) {
+        mApi.updatePhone(idPhone, phoneNumber, listener);
+    }
+
     public User getUser() {
         return mUser;
     }

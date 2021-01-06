@@ -23,13 +23,15 @@ import androidx.navigation.Navigation;
 import com.javamaster.demo.FabButtonClick;
 import com.javamaster.demo.MainActivity;
 import com.javamaster.demo.R;
+import com.javamaster.demo.model.Phone;
+import com.javamaster.demo.model.PhoneAdapter;
 
 import java.util.ArrayList;
 
 public class PhonesFragment extends Fragment implements FabButtonClick {
 
     private PhonesViewModel phonesViewModel;
-    ArrayList<String> arrayList;
+    ArrayList<Phone> phones;
     private Context mContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,29 +40,32 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
         if (!phonesViewModel.isInitialized()) {
             phonesViewModel.setDbManager(mContext);
             phonesViewModel.openDb();
-            phonesViewModel.init(getActivity());
+            phonesViewModel.init(getActivity(), mContext);
             phonesViewModel.closeDb();
         }
 
         View root = inflater.inflate(R.layout.fragment_phones, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
-        final ListView listView = root.findViewById(R.id.listView);
-        phonesViewModel.getList().observe(getActivity(), new Observer<ArrayList<String>>() {
+        final ListView phonesList = root.findViewById(R.id.phonesList);
+
+        phonesViewModel.getList().observe(getActivity(), new Observer<ArrayList<Phone>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<String> list) {
-                arrayList = list;
+            public void onChanged(@Nullable ArrayList<Phone> list) {
+                phones = list;
                 Context context = mContext;
-                ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, arrayList);
-                listView.setAdapter(arrayAdapter);
+                PhoneAdapter phoneAdapter = new PhoneAdapter(context, R.layout.fragment_phone_item, phones);
+                phonesList.setAdapter(phoneAdapter);
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        phonesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String phone = arrayList.get(position);
+                Phone phone = (Phone) parent.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
-                bundle.putString("phone", phone);
+                bundle.putInt("phoneId", phone.getId());
+                bundle.putString("phoneNumber", phone.getPhoneNumber());
                 bundle.putBoolean("add", false);
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_phones_to_nav_phone_crud, bundle);
