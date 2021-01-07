@@ -13,7 +13,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.javamaster.demo.R;
-import com.javamaster.demo.Util;
 import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.Phone;
 import com.javamaster.demo.model.User;

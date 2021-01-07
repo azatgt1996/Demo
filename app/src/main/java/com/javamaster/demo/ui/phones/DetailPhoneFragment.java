@@ -67,7 +67,6 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
                     String phoneNum = editText_phoneNumber.getText().toString().trim();
                     phone.setPhoneNumber(phoneNum);
                     if (!phonesViewModel.changeItem(phone)) {
-                        Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
                         editText_phoneNumber.setText(oldPhoneNum);
                     }
                 }
@@ -106,9 +105,10 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         String phoneNum = editText_phoneNumber.getText().toString().trim();
         phone = new Phone(id, phoneNum);
         if (!phonesViewModel.addItem(phone)) {
-            Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
+
+        } else {
+            getActivity().onBackPressed();
         }
-        getActivity().onBackPressed();
     }
 
     @Override
