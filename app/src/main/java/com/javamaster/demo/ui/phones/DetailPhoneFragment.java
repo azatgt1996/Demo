@@ -29,7 +29,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
     private Button changePhone;
     private PhonesViewModel phonesViewModel;
     private Phone phone;
-    private Phone changedPhone;
+    private String oldPhoneNum;
     private Context mContext;
 
     @Override
@@ -60,15 +60,15 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
                 if (changePhone.getText().toString().equals("Change")) {
                     changePhone.setText("Save");
                     editText_phoneNumber.setEnabled(true);
+                    oldPhoneNum = phone.getPhoneNumber();
                 } else {
                     changePhone.setText("Change");
                     editText_phoneNumber.setEnabled(false);
-                    int id = Integer.parseInt(textView_phoneId.getText().toString());
                     String phoneNum = editText_phoneNumber.getText().toString();
-                    changedPhone = new Phone(id, phoneNum);
-                    if (!phonesViewModel.changeItem(phone, changedPhone)) {
+                    phone.setPhoneNumber(phoneNum);
+                    if (!phonesViewModel.changeItem(phone)) {
                         Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
-                        editText_phoneNumber.setText(phone.getPhoneNumber());
+                        editText_phoneNumber.setText(oldPhoneNum);
                     }
                 }
             }

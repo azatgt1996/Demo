@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.javamaster.demo.model.Model;
+import com.javamaster.demo.model.User;
+import com.javamaster.demo.model.api.AbstractAPIListener;
+
 import static java.util.Objects.isNull;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -40,14 +44,27 @@ public class RegistrationActivity extends AppCompatActivity {
                 String confirmPassword = passwordConfirmText.getText().toString();
 
                 if (validate(name, login, email, password, confirmPassword)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                    builder.setMessage(R.string.info);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-                    builder.show();
+
+                    final Model model = Model.getInstance(RegistrationActivity.this.getApplication());
+                    if (model.isOnline(RegistrationActivity.this)) {
+
+                        model.register(login, name, email, password, new AbstractAPIListener() {
+                            @Override
+                            public void onRegistered(String mes) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+                                //builder.setMessage(R.string.info);
+                                builder.setMessage(mes);
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(RegistrationActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

@@ -33,6 +33,27 @@ public class Phone {
         return phoneNumList;
     }
 
+    public static boolean isExisted(List<Phone> list, String phoneNumber) {
+        for (int i = 0; i < list.size(); i++) {
+            Phone p = list.get(i);
+            if (p.getPhoneNumber().equals(phoneNumber)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static int getIndById(List<Phone> list, int phoneId) {
+        for (int i = 0; i < list.size(); i++) {
+            Phone p = list.get(i);
+            if (p.getId() == phoneId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public Phone(int id, String phoneNumber) {
         this.id = id;
         this.phoneNumber = phoneNumber;
@@ -55,5 +76,17 @@ public class Phone {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Phone)) {
+            return false;
+        }
+        Phone other = (Phone) o;
+        return phoneNumber.equals(other.phoneNumber) && id ==other.id;
+    }
+
+    public int hashCode() {
+        return phoneNumber.hashCode();
     }
 }

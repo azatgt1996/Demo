@@ -12,6 +12,16 @@ public class AbstractAPIListener implements APIListener {
     }
 
     @Override
+    public void onRegistered(String mes) {
+
+    }
+
+    @Override
+    public void onRecovered(String mes) {
+
+    }
+
+    @Override
     public void onPhonesLoaded(List<Phone> phones) {
 
     }

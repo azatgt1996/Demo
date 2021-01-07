@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.javamaster.demo.Util;
+import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.User;
 
 public class UserInfoViewModel extends AndroidViewModel {
@@ -22,9 +23,8 @@ public class UserInfoViewModel extends AndroidViewModel {
         mName = new MutableLiveData<>();
         mEmail = new MutableLiveData<>();
 
-
-        final Util util = Util.getInstance(application.getApplicationContext());
-        user = util.getUserInfo();
+        final Model model = Model.getInstance(this.getApplication());
+        user = model.getUser();
 
         String login = user.getLogin();
         String name = user.getName();
@@ -33,7 +33,6 @@ public class UserInfoViewModel extends AndroidViewModel {
         mLogin.setValue(login);
         mName.setValue(name);
         mEmail.setValue(email);
-
     }
 
     public LiveData<String> getLogin() {

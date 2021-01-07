@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.User;
 
 public class MainEmptyActivity extends AppCompatActivity {
@@ -18,9 +19,10 @@ public class MainEmptyActivity extends AppCompatActivity {
         final Util util = Util.getInstance(this);
         User user = util.getUserInfo();
 
-
         if (user != null) {
             activityIntent = new Intent(this, MainActivity.class);
+            final Model model = Model.getInstance(this.getApplication());
+            model.setUser(user);
         }
         else {
             activityIntent = new Intent(this, LoginActivity.class);

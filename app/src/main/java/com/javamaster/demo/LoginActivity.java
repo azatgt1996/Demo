@@ -44,26 +44,30 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordText.getText().toString();
 
                 final Model model = Model.getInstance(LoginActivity.this.getApplication());
-                model.login(login, password, new AbstractAPIListener() {
+                if (model.isOnline(LoginActivity.this)) {
 
-                    @Override
-                    public void onLogin(User user) {
-                        if (user != null) {
-                            model.setUser(user);
-                            Toast.makeText(LoginActivity.this, "User " + user.getName() + " logged in!", Toast.LENGTH_LONG).show();
+                    model.login(login, password, new AbstractAPIListener() {
+                        @Override
+                        public void onLogin(User user) {
+                            if (user != null) {
+                                model.setUser(user);
+                                Toast.makeText(LoginActivity.this, "User " + user.getName() + " logged in!", Toast.LENGTH_LONG).show();
 
-                            final Util util = Util.getInstance(LoginActivity.this);
-                            util.saveUserInfo(user);
+                                final Util util = Util.getInstance(LoginActivity.this);
+                                util.saveUserInfo(user);
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Invalid login/password!", Toast.LENGTH_LONG).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(LoginActivity.this, "Invalid login/password!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(LoginActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

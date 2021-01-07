@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.javamaster.demo.model.Model;
+import com.javamaster.demo.model.api.AbstractAPIListener;
+
 public class RecoveryActivity extends AppCompatActivity {
 
     @Override
@@ -31,14 +34,27 @@ public class RecoveryActivity extends AppCompatActivity {
 
 
                 if (validate(login, email)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RecoveryActivity.this);
-                    builder.setMessage(R.string.info_recovery);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-                    builder.show();
+
+                    final Model model = Model.getInstance(RecoveryActivity.this.getApplication());
+                    if (model.isOnline(RecoveryActivity.this)) {
+
+                        model.recovery(login, email, new AbstractAPIListener() {
+                            @Override
+                            public void onRecovered(String mes) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RecoveryActivity.this);
+                                //builder.setMessage(R.string.info_recovery);
+                                builder.setMessage(mes);
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(RecoveryActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
