@@ -21,22 +21,14 @@ public class PhonesViewModel extends ViewModel {
     private DbManager dbManager;
     private final MutableLiveData<ArrayList<Phone>> mList = new MutableLiveData<>();
     private ArrayList<Phone> list;
-    private boolean isInitialized = false;
     private Model model;
     private Context mContext;
-
-    public boolean isInitialized() {
-        return isInitialized;
-    }
-
-    public void setDbManager(Context context) {
-        dbManager = new DbManager(context);
-    }
 
     public void init(Activity activity, Context context) {
         mContext = context;
         list = new ArrayList<>();
-        //list = (ArrayList<String>) dbManager.getAllPhones();
+//            dbManager = new DbManager(context);
+//            list = (ArrayList<Phone>) dbManager.getAllPhones();
         model = Model.getInstance(activity.getApplication());
         if (model.isOnline(mContext)) {
             model.loadPhones(new AbstractAPIListener(){
@@ -44,17 +36,14 @@ public class PhonesViewModel extends ViewModel {
                 public void onPhonesLoaded(List<Phone> phones) {
                     list = (ArrayList<Phone>) phones;
                     mList.setValue(list);
-                    isInitialized = true;
                 }
             });
         } else {
             Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_LONG).show();
         }
     }
-    public PhonesViewModel() {
-        if (!isInitialized) {
 
-        }
+    public PhonesViewModel() {
     }
 
     public void openDb() {
@@ -123,7 +112,7 @@ public class PhonesViewModel extends ViewModel {
                 return false;
             }
         } else {
-            Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "This phone exists!", Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -151,7 +140,7 @@ public class PhonesViewModel extends ViewModel {
                 return false;
             }
         } else {
-            Toast.makeText(mContext, "This phone is exists!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "This phone exists!", Toast.LENGTH_LONG).show();
             return false;
         }
     }

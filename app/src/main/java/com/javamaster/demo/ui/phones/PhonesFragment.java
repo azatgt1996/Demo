@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.javamaster.demo.FabButtonClick;
 import com.javamaster.demo.MainActivity;
@@ -33,20 +34,18 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
     private PhonesViewModel phonesViewModel;
     ArrayList<Phone> phones;
     private Context mContext;
+    private SwipeRefreshLayout sw_refresh;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
-
-        if (!phonesViewModel.isInitialized()) {
-            phonesViewModel.setDbManager(mContext);
-            phonesViewModel.openDb();
-            phonesViewModel.init(getActivity(), mContext);
-            phonesViewModel.closeDb();
-        }
+//        phonesViewModel.openDb();
+        phonesViewModel.init(getActivity(), mContext);
+//        phonesViewModel.closeDb();
 
         View root = inflater.inflate(R.layout.fragment_phones, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
+        sw_refresh = root.findViewById(R.id.sw_refresh);
         final ListView phonesList = root.findViewById(R.id.phonesList);
 
         phonesViewModel.getList().observe(getActivity(), new Observer<ArrayList<Phone>>() {
@@ -69,6 +68,14 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
                 bundle.putBoolean("add", false);
 
                 Navigation.findNavController(view).navigate(R.id.action_nav_phones_to_nav_phone_crud, bundle);
+            }
+        });
+
+        sw_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                phonesViewModel.init(getActivity(), mContext);
+                sw_refresh.setRefreshing(false);
             }
         });
 
@@ -104,9 +111,9 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
             builder.setMessage(R.string.message_delete);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    phonesViewModel.openDb();
+//                    phonesViewModel.openDb();
                     phonesViewModel.deleteAll();
-                    phonesViewModel.closeDb();
+//                    phonesViewModel.closeDb();
                 }
             });
             builder.setNegativeButton("No", null);

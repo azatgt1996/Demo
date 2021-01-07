@@ -38,7 +38,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         View view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
         ((MainActivity)getActivity()).setListener(this);
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
-        phonesViewModel.openDb();
+//        phonesViewModel.openDb();
 
         editText_phoneNumber = view.findViewById(R.id.phoneNumber);
         textView_phoneId = view.findViewById(R.id.phoneId);
@@ -79,7 +79,6 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
             deletePhone.setVisibility(View.INVISIBLE);
             changePhone.setVisibility(View.INVISIBLE);
             editText_phoneNumber.setEnabled(true);
-            textView_phoneId.setVisibility(View.INVISIBLE);
         } else {
             int id = bundle.getInt("phoneId");
             String phoneNum = bundle.getString("phoneNumber");
@@ -87,7 +86,6 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
             editText_phoneNumber.setText(phone.getPhoneNumber());
             deletePhone.setVisibility(View.VISIBLE);
             changePhone.setVisibility(View.VISIBLE);
-            textView_phoneId.setVisibility(View.VISIBLE);
             textView_phoneId.setText(String.valueOf(phone.getId()));
         }
         return view;
@@ -104,16 +102,14 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         int id = -1;
         String phoneNum = editText_phoneNumber.getText().toString().trim();
         phone = new Phone(id, phoneNum);
-        if (!phonesViewModel.addItem(phone)) {
-
-        } else {
-            getActivity().onBackPressed();
+        if (phonesViewModel.addItem(phone)) {
+            //getActivity().onBackPressed();
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        phonesViewModel.closeDb();
+//        phonesViewModel.closeDb();
     }
 }

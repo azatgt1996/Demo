@@ -17,6 +17,9 @@ import com.javamaster.demo.model.api.AbstractAPIListener;
 public class LoginActivity extends AppCompatActivity {
 
     private long back_pressed;
+    private EditText loginText;
+    private EditText passwordText;
+    private Button loginButton;
 
     @Override
     public void onBackPressed() {
@@ -33,9 +36,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText loginText = findViewById(R.id.loginText);
-        final EditText passwordText = findViewById(R.id.passwordText);
-        Button loginButton = findViewById(R.id.LoginBtn);
+        loginText = findViewById(R.id.loginText);
+        passwordText = findViewById(R.id.passwordText);
+        loginButton = findViewById(R.id.LoginBtn);
 
         loginButton.setOnClickListener(new View.OnClickListener(){
 
@@ -88,5 +91,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        passwordText.setText("");
     }
 }

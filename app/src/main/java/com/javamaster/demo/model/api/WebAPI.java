@@ -181,39 +181,39 @@ public class WebAPI implements API {
     public void loadPhones(final APIListener listener) {
         String url = BASE_URL + "api/phones";
 
-//        try {
-            Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
-                        List<Phone> phones = Phone.getPhones(response);
-                        if (listener != null) {
-                            listener.onPhonesLoaded(phones);
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+//    try {
+        Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<Phone> phones = Phone.getPhones(response);
+                    if (listener != null) {
+                        listener.onPhonesLoaded(phones);
                     }
+                } catch (JSONException e) {
+                    Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
                 }
-            };
+            }
+        };
 
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
-                }
-            };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showErrorMessage(error);
+            }
+        };
 
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Accept", "application/json");
-                    headers.put("Authorization", "Bearer " + mModel.getUser().getToken());
-                    return headers;
-                }
-            };
-            mRequestQueue.add(request);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + mModel.getUser().getToken());
+                return headers;
+            }
+        };
+        mRequestQueue.add(request);
             // for testing
 //            {
 //                JSONArray jsonArray = new JSONArray();
@@ -351,37 +351,37 @@ public class WebAPI implements API {
         String url = BASE_URL + "api/phones" ;
 
 //        try {
-            Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        String mes = response.getString("message");
-                        listener.onAllPhonesDeleted(mes);
-                    }
-                    catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
-                    }
+        Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String mes = response.getString("message");
+                    listener.onAllPhonesDeleted(mes);
                 }
-            };
+                catch (JSONException e) {
+                    Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
 
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
-                }
-            };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showErrorMessage(error);
+            }
+        };
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, successListener, errorListener) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Accept", "application/json");
-                    headers.put("Authorization", "Bearer " + mModel.getUser().getToken());
-                    return headers;
-                }
-            };
-            mRequestQueue.add(request);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, successListener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + mModel.getUser().getToken());
+                return headers;
+            }
+        };
+        mRequestQueue.add(request);
             // for testing
 //            {
 //                JSONObject response = new JSONObject();

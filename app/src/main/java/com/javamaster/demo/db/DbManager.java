@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.javamaster.demo.model.Phone;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +42,14 @@ public class DbManager {
         db.delete(Phones.TABLE_NAME, null, null);
     }
 
-     public List<String> getAllPhones() {
-         List<String> list = new ArrayList<>();
+     public List<Phone> getAllPhones() {
+         List<Phone> list = new ArrayList<>();
          Cursor cursor = db.query( Phones.TABLE_NAME, null, null,
                  null, null, null, null);
          while (cursor.moveToNext()) {
+             int id = cursor.getInt(cursor.getColumnIndex(Phones.ID));
              String phoneNum = cursor.getString(cursor.getColumnIndex(Phones.PHONE_NUM));
-             list.add(phoneNum);
+             list.add(new Phone(id, phoneNum));
          }
          cursor.close();
          return list;

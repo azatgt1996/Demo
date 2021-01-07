@@ -71,11 +71,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private boolean validate(String name, String login, String email, String password, String confirmPassword ) {
         if (login == null || login.length() < 5) {
-            Toast.makeText(RegistrationActivity.this, "Login is empty or too small", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Login is small (min 5 symbols)", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (password == null || password.length() < 8) {
-            Toast.makeText(RegistrationActivity.this, "Password is too insecure", Toast.LENGTH_LONG).show();
+        if (password == null || !password.matches("(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,15})$")) {
+            Toast.makeText(RegistrationActivity.this, "Password is insecure", Toast.LENGTH_LONG).show();
             return false;
         }
         if (!password.equals(confirmPassword)) {
@@ -83,11 +83,11 @@ public class RegistrationActivity extends AppCompatActivity {
             return false;
         }
         if (email == null || !email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")) {
-            Toast.makeText(RegistrationActivity.this, "Email is empty or not valid", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Email is not valid", Toast.LENGTH_LONG).show();
             return false;
         }
         if (name == null || name.length() < 2) {
-            Toast.makeText(RegistrationActivity.this, "Name is empty or too small", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegistrationActivity.this, "Name is small (min 2 symbols)", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

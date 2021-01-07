@@ -61,11 +61,11 @@ public class RecoveryActivity extends AppCompatActivity {
 
     private boolean validate(String login, String email) {
         if (login == null || login.length() < 5) {
-            Toast.makeText(RecoveryActivity.this, "Login is empty or too small", Toast.LENGTH_LONG).show();
+            Toast.makeText(RecoveryActivity.this, "Login is small (min 5 symbols)", Toast.LENGTH_LONG).show();
             return false;
         }
         if (email == null || !email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")) {
-            Toast.makeText(RecoveryActivity.this, "Email is empty or not valid", Toast.LENGTH_LONG).show();
+            Toast.makeText(RecoveryActivity.this, "Email is not valid", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
