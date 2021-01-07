@@ -461,6 +461,8 @@ public class WebAPI implements API {
             } catch (JSONException e) {
                 Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
         }
     }
 }
