@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View v) {
-                String login = loginText.getText().toString();
-                String password = passwordText.getText().toString();
+                String login = loginText.getText().toString().trim();
+                String password = passwordText.getText().toString().trim();
 
                 final Model model = Model.getInstance(LoginActivity.this.getApplication());
                 if (model.isOnline(LoginActivity.this)) {
@@ -59,9 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
-                            }
-                            else {
-                                Toast.makeText(LoginActivity.this, "Invalid login/password!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });

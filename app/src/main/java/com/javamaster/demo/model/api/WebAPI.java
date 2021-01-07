@@ -4,6 +4,7 @@ package com.javamaster.demo.model.api;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -64,8 +65,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
-                    listener.onLogin(null);
+                    showErrorMessage(error);
                 }
             };
 
@@ -115,7 +115,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -159,7 +159,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -200,7 +200,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -266,7 +266,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -318,7 +318,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -368,7 +368,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -421,7 +421,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+                    showErrorMessage(error);
                 }
             };
 
@@ -447,6 +447,20 @@ public class WebAPI implements API {
         }
         catch (JSONException e) {
             Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showErrorMessage(VolleyError error) {
+        NetworkResponse networkResponse = error.networkResponse;
+        if (networkResponse != null && networkResponse.data != null) {
+            String jsonError = new String(networkResponse.data);
+            try {
+                JSONObject jsonMes = new JSONObject(jsonError);
+                String mes = jsonMes.getString("message");
+                Toast.makeText(mApplication, mes, Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

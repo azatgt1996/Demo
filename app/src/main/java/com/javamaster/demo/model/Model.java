@@ -46,7 +46,7 @@ public class Model {
     }
 
     public void register(String login, String name, String email, String password, APIListener listener) {
-        mApi.register(login, password, name, email, listener);
+        mApi.register(login, name, email, password, listener);
     }
 
     public void recovery(String login, String email, APIListener listener) {

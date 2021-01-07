@@ -12,8 +12,6 @@
     <string name="menu_phones">Phones</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_logout">Logout</string>
-    <string name="info">Visit your email to activate</string>
-    <string name="info_recovery">A activation link and a new password have been sent to your email</string>
     <string name="recovery">Recovery</string>
     <string name="registration">Registration</string>
     <string name="login">Login</string>

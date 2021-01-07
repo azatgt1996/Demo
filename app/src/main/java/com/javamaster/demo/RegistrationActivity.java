@@ -37,11 +37,11 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String name = nameText.getText().toString();
-                String login = loginText.getText().toString();
-                String email = emailText.getText().toString();
-                String password = passwordText.getText().toString();
-                String confirmPassword = passwordConfirmText.getText().toString();
+                String name = nameText.getText().toString().trim();
+                String login = loginText.getText().toString().trim();
+                String email = emailText.getText().toString().trim();
+                String password = passwordText.getText().toString().trim();
+                String confirmPassword = passwordConfirmText.getText().toString().trim();
 
                 if (validate(name, login, email, password, confirmPassword)) {
 
@@ -52,7 +52,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             @Override
                             public void onRegistered(String mes) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
-                                //builder.setMessage(R.string.info);
                                 builder.setMessage(mes);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

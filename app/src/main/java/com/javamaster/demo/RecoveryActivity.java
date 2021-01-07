@@ -29,8 +29,8 @@ public class RecoveryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String login = loginText.getText().toString();
-                String email = emailText.getText().toString();
+                String login = loginText.getText().toString().trim();
+                String email = emailText.getText().toString().trim();
 
 
                 if (validate(login, email)) {
@@ -42,7 +42,6 @@ public class RecoveryActivity extends AppCompatActivity {
                             @Override
                             public void onRecovered(String mes) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RecoveryActivity.this);
-                                //builder.setMessage(R.string.info_recovery);
                                 builder.setMessage(mes);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
