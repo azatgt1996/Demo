@@ -15,13 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.javamaster.demo.CustomFragmentListener;
 import com.javamaster.demo.FabButtonClick;
 import com.javamaster.demo.MainActivity;
 import com.javamaster.demo.R;
 import com.javamaster.demo.model.Phone;
 
 
-public class DetailPhoneFragment extends Fragment implements FabButtonClick {
+public class DetailPhoneFragment extends Fragment implements FabButtonClick, CustomFragmentListener {
 
     private EditText editText_phoneNumber;
     private TextView textView_phoneId;
@@ -37,7 +38,9 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
 
         View view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
         ((MainActivity)getActivity()).setListener(this);
+
         phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
+        phonesViewModel.setListener(this);
 //        phonesViewModel.openDb();
 
         editText_phoneNumber = view.findViewById(R.id.phoneNumber);
@@ -62,12 +65,15 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
                     editText_phoneNumber.setEnabled(true);
                     oldPhoneNum = phone.getPhoneNumber();
                 } else {
-                    changePhone.setText("Change");
-                    editText_phoneNumber.setEnabled(false);
+
                     String phoneNum = editText_phoneNumber.getText().toString().trim();
-                    phone.setPhoneNumber(phoneNum);
-                    if (!phonesViewModel.changeItem(phone)) {
-                        editText_phoneNumber.setText(oldPhoneNum);
+
+                    if (!phoneNum.equals(oldPhoneNum)) {
+                        phone.setPhoneNumber(phoneNum);
+                        phonesViewModel.changeItem(phone);
+                    } else {
+                        changePhone.setText("Change");
+                        editText_phoneNumber.setEnabled(false);
                     }
                 }
             }
@@ -102,14 +108,25 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick {
         int id = -1;
         String phoneNum = editText_phoneNumber.getText().toString().trim();
         phone = new Phone(id, phoneNum);
-        if (phonesViewModel.addItem(phone)) {
-            //getActivity().onBackPressed();
-        }
+
+        phonesViewModel.addItem(phone);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 //        phonesViewModel.closeDb();
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void onCommitted() {
+        changePhone.setText("Change");
+        editText_phoneNumber.setEnabled(false);
+//        getActivity().onBackPressed();
     }
 }
