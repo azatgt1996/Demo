@@ -94,51 +94,42 @@ public class PhonesViewModel extends ViewModel {
     }
 
     public void addItem(final Phone phone) {
-        if (!Phone.isExisted(list, phone.getPhoneNumber())) {
-            if (model.isOnline(mContext)) {
-                model.addPhone(phone.getPhoneNumber(), new AbstractAPIListener() {
-                    @Override
-                    public void onPhoneAdded(String mes, int id) {
-                        phone.setId(id);
-                        list.add(phone);
-                        mList.setValue(list);
+        if (model.isOnline(mContext)) {
+            model.addPhone(phone.getPhoneNumber(), new AbstractAPIListener() {
+                @Override
+                public void onPhoneAdded(String mes, int id) {
+                    phone.setId(id);
+                    list.add(phone);
+                    mList.setValue(list);
 
-                        //dbManager.insertPhone(phone);
-                        Toast.makeText(mContext, mes, Toast.LENGTH_SHORT).show();
-                        customFragmentListener.onBackPressed();
-                    }
-                });
-            } else {
-                Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_LONG).show();
-            }
+                    //dbManager.insertPhone(phone);
+                    Toast.makeText(mContext, mes, Toast.LENGTH_SHORT).show();
+                    customFragmentListener.onBackPressed();
+                }
+            });
         } else {
-            Toast.makeText(mContext, "This phone exists!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_LONG).show();
         }
     }
 
     public void changeItem(final Phone changedPhone) {
-        if (!Phone.isExisted(list, changedPhone.getPhoneNumber())) {
+        if (model.isOnline(mContext)) {
+            model.updatePhone(changedPhone.getId(), changedPhone.getPhoneNumber(), new AbstractAPIListener() {
+                @Override
+                public void onPhoneUpdated(String mes) {
+                    int pos = Phone.getIndById(list, changedPhone.getId());
+                    if (pos != -1) {
+                        list.set(pos, new Phone(changedPhone.getId(), changedPhone.getPhoneNumber()));
+                        mList.setValue(list);
 
-            if (model.isOnline(mContext)) {
-                model.updatePhone(changedPhone.getId(), changedPhone.getPhoneNumber(), new AbstractAPIListener() {
-                    @Override
-                    public void onPhoneUpdated(String mes) {
-                        int pos = Phone.getIndById(list, changedPhone.getId());
-                        if (pos != -1) {
-                            list.set(pos, new Phone(changedPhone.getId(), changedPhone.getPhoneNumber()));
-                            mList.setValue(list);
-
-                            //dbManager.updatePhone(oldPhone, changedPhone);
-                            Toast.makeText(mContext, mes, Toast.LENGTH_SHORT).show();
-                            customFragmentListener.onCommitted();
-                        }
+                        //dbManager.updatePhone(oldPhone, changedPhone);
+                        Toast.makeText(mContext, mes, Toast.LENGTH_SHORT).show();
+                        customFragmentListener.onCommitted();
                     }
-                });
-            } else {
-                Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_LONG).show();
-            }
+                }
+            });
         } else {
-            Toast.makeText(mContext, "This phone exists!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_LONG).show();
         }
     }
 
