@@ -91,7 +91,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
             deletePhone.setVisibility(View.INVISIBLE);
             changePhone.setVisibility(View.INVISIBLE);
             editText_phoneNumber.setEnabled(true);
-//            editText_phoneNumber.requestFocus();
+            editText_phoneNumber.requestFocus();
             showKeyboard();
         } else {
             int id = bundle.getInt("phoneId");
