@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,17 +36,20 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
     ArrayList<Phone> phones;
     private Context mContext;
     private SwipeRefreshLayout sw_refresh;
+    private  View root;
+    private ConstraintLayout constraintLayout_main;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
+        root = inflater.inflate(R.layout.fragment_phones, container, false);
+        sw_refresh = root.findViewById(R.id.sw_refresh);
+        constraintLayout_main = getActivity().findViewById(R.id.constraintLayout_main);
+        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, constraintLayout_main)).get(PhonesViewModel.class);
 //        phonesViewModel.openDb();
-        phonesViewModel.init(getActivity(), mContext);
+        phonesViewModel.init();
 //        phonesViewModel.closeDb();
 
-        View root = inflater.inflate(R.layout.fragment_phones, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
-        sw_refresh = root.findViewById(R.id.sw_refresh);
         final ListView phonesList = root.findViewById(R.id.phonesList);
 
         phonesViewModel.getList().observe(getActivity(), new Observer<ArrayList<Phone>>() {
@@ -74,7 +78,7 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
         sw_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                phonesViewModel.init(getActivity(), mContext);
+                phonesViewModel.init();
                 sw_refresh.setRefreshing(false);
             }
         });

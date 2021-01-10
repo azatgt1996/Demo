@@ -56,7 +56,7 @@ public class WebAPI implements API {
                         listener.onLogin(user);
                     }
                     catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                        showException();
                     }
                 }
             };
@@ -72,7 +72,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            showException();
         }
     }
 
@@ -95,7 +95,7 @@ public class WebAPI implements API {
                         listener.onRegistered(mes);
                     }
                     catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                        showException();
                     }
                 }
             };
@@ -111,7 +111,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            showException();
         }
     }
 
@@ -132,7 +132,7 @@ public class WebAPI implements API {
                         listener.onRecovered(mes);
                     }
                     catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                        showException();
                     }
                 }
             };
@@ -148,7 +148,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            showException();
         }
     }
 
@@ -165,7 +165,7 @@ public class WebAPI implements API {
                         listener.onPhonesLoaded(phones);
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    showException();
                 }
             }
         };
@@ -207,7 +207,7 @@ public class WebAPI implements API {
                         listener.onPhoneAdded(mes, phoneId);
                     }
                     catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                        showException();
                     }
                 }
             };
@@ -232,7 +232,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            showException();
         }
     }
 
@@ -248,7 +248,7 @@ public class WebAPI implements API {
                     listener.onPhoneDeleted(mes);
                 }
                 catch (JSONException e) {
-                    Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    showException();
                 }
             }
         };
@@ -285,7 +285,7 @@ public class WebAPI implements API {
                     listener.onAllPhonesDeleted(mes);
                 }
                 catch (JSONException e) {
-                    Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                    showException();
                 }
             }
         };
@@ -326,7 +326,7 @@ public class WebAPI implements API {
                         listener.onPhoneUpdated(mes);
                     }
                     catch (JSONException e) {
-                        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                        showException();
                     }
                 }
             };
@@ -351,7 +351,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+            showException();
         }
     }
 
@@ -362,12 +362,16 @@ public class WebAPI implements API {
             try {
                 JSONObject jsonMes = new JSONObject(jsonError);
                 String mes = jsonMes.getString("message");
-                Toast.makeText(mApplication, mes, Toast.LENGTH_LONG).show();
+                Toast.makeText(mApplication, mes, Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_LONG).show();
+                showException();
             }
         } else {
-            Toast.makeText(mApplication, "Error response", Toast.LENGTH_LONG).show();
+            Toast.makeText(mApplication, "Error response", Toast.LENGTH_SHORT).show();
         }
+    }
+    
+    private void showException() {
+        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_SHORT).show();
     }
 }

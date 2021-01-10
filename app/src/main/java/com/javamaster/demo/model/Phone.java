@@ -22,6 +22,17 @@ public class Phone {
         return phones;
     }
 
+    public static boolean isExisted(List<Phone> list, String phoneNumber) {
+        for (int i = 0; i < list.size(); i++) {
+            Phone p = list.get(i);
+            if (p.getPhoneNumber().equals(phoneNumber)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static int getIndById(List<Phone> list, int phoneId) {
         for (int i = 0; i < list.size(); i++) {
             Phone p = list.get(i);

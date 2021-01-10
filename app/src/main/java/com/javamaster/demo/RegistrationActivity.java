@@ -4,20 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.javamaster.demo.model.Model;
-import com.javamaster.demo.model.User;
 import com.javamaster.demo.model.api.AbstractAPIListener;
 
-import static java.util.Objects.isNull;
-
 public class RegistrationActivity extends AppCompatActivity {
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String email = emailText.getText().toString().trim();
                 String password = passwordText.getText().toString().trim();
                 String confirmPassword = passwordConfirmText.getText().toString().trim();
+                view = v;
 
                 if (validate(name, login, email, password, confirmPassword)) {
 
@@ -62,32 +60,32 @@ public class RegistrationActivity extends AppCompatActivity {
                             }
                         });
                     } else {
-                        Toast.makeText(RegistrationActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(v, "No internet connection!", 2000).show();
                     }
                 }
             }
         });
     }
 
-    private boolean validate(String name, String login, String email, String password, String confirmPassword ) {
+    private boolean validate(String name, String login, String email, String password, String confirmPassword) {
         if (login == null || login.length() < 5) {
-            Toast.makeText(RegistrationActivity.this, "Login is small (min 5 symbols)", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Login is small (min 5 symbols)", 2000).show();
             return false;
         }
         if (password == null || !password.matches("(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,15})$")) {
-            Toast.makeText(RegistrationActivity.this, "Password is insecure", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Password is insecure", 2000).show();
             return false;
         }
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(RegistrationActivity.this, "You entered two different passwords", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "You entered two different passwords", 2000).show();
             return false;
         }
         if (email == null || !email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")) {
-            Toast.makeText(RegistrationActivity.this, "Email is not valid", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Email is not valid", 2000).show();
             return false;
         }
         if (name == null || name.length() < 2) {
-            Toast.makeText(RegistrationActivity.this, "Name is small (min 2 symbols)", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Name is small (min 2 symbols)", 2000).show();
             return false;
         }
         return true;

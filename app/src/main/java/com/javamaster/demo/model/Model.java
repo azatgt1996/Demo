@@ -13,6 +13,7 @@ public class Model {
     private static Model sInstance = null;
     private final API mApi;
     private User mUser;
+    private final Application mApplication;
 
     public static Model getInstance(Application application) {
         if (sInstance == null) {
@@ -34,8 +35,6 @@ public class Model {
         mApplication = application;
         mApi = new WebAPI(mApplication, this);
     }
-
-    private final Application mApplication;
 
     public Application getApplication() {
         return mApplication;

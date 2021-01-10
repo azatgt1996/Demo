@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.User;
 import com.javamaster.demo.model.api.AbstractAPIListener;
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Repeat to exit", Toast.LENGTH_SHORT).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "Repeat to exit", 2000).show();
         }
         back_pressed = System.currentTimeMillis();
     }
@@ -42,9 +42,18 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(new View.OnClickListener(){
 
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 String login = loginText.getText().toString().trim();
                 String password = passwordText.getText().toString().trim();
+
+                if (login.isEmpty()) {
+                    Snackbar.make(v, "Login is empty", 2000).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Snackbar.make(v, "Password is empty", 2000).show();
+                    return;
+                }
 
                 final Model model = Model.getInstance(LoginActivity.this.getApplication());
                 if (model.isOnline(LoginActivity.this)) {
@@ -54,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
                         public void onLogin(User user) {
                             if (user != null) {
                                 model.setUser(user);
-                                Toast.makeText(LoginActivity.this, "User " + user.getName() + " logged in!", Toast.LENGTH_LONG).show();
 
                                 final Util util = Util.getInstance(LoginActivity.this);
                                 util.saveUserInfo(user);
@@ -66,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(LoginActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(v, "No internet connection!", 2000).show();
                 }
             }
         });

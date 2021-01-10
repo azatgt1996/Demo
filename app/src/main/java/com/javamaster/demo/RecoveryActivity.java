@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.api.AbstractAPIListener;
 
 public class RecoveryActivity extends AppCompatActivity {
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class RecoveryActivity extends AppCompatActivity {
 
                 String login = loginText.getText().toString().trim();
                 String email = emailText.getText().toString().trim();
-
+                view = v;
 
                 if (validate(login, email)) {
 
@@ -52,7 +53,7 @@ public class RecoveryActivity extends AppCompatActivity {
                             }
                         });
                     } else {
-                        Toast.makeText(RecoveryActivity.this, "No internet connection!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(v, "No internet connection!", 2000).show();
                     }
                 }
             }
@@ -61,11 +62,11 @@ public class RecoveryActivity extends AppCompatActivity {
 
     private boolean validate(String login, String email) {
         if (login == null || login.length() < 5) {
-            Toast.makeText(RecoveryActivity.this, "Login is small (min 5 symbols)", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Login is small (min 5 symbols)", 2000).show();
             return false;
         }
         if (email == null || !email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")) {
-            Toast.makeText(RecoveryActivity.this, "Email is not valid", Toast.LENGTH_LONG).show();
+            Snackbar.make(view, "Email is not valid", 2000).show();
             return false;
         }
         return true;

@@ -1,27 +1,29 @@
 package com.javamaster.demo.ui.info;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.javamaster.demo.Util;
 import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.User;
 
 public class UserInfoViewModel extends AndroidViewModel {
 
+    private View mView;
     private User user;
     private MutableLiveData<String> mLogin;
     private MutableLiveData<String> mName;
     private MutableLiveData<String> mEmail;
 
-    public UserInfoViewModel(final Application application) {
+    public UserInfoViewModel(Application application, View view) {
         super(application);
         mLogin = new MutableLiveData<>();
         mName = new MutableLiveData<>();
         mEmail = new MutableLiveData<>();
+        mView = view;
 
         final Model model = Model.getInstance(this.getApplication());
         user = model.getUser();

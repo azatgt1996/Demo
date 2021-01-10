@@ -19,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -27,7 +28,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
                         fabButtonClick.onFabClicked();
                         break;
                     case R.id.nav_phone_crud:
+                        fabButtonClick.onFabClicked();
+                        break;
+                    case R.id.nav_tools:
                         fabButtonClick.onFabClicked();
                         break;
                 }
@@ -159,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 if (back_pressed + 2000 > System.currentTimeMillis()) {
                     super.onBackPressed();
                 } else {
-                    Toast.makeText(this, "Repeat to exit", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "Repeat to exit", 2000).show();
                 }
                 back_pressed = System.currentTimeMillis();
             } else if (navController.getCurrentDestination().getId() != R.id.nav_phone_crud) {

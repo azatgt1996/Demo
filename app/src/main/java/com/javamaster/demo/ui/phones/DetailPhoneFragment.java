@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
     private Phone phone;
     private String oldPhoneNum;
     private Context mContext;
+    private ConstraintLayout constraintLayout_main;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
@@ -39,7 +42,8 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
         View view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
-        phonesViewModel = ViewModelProviders.of(getActivity()).get(PhonesViewModel.class);
+        constraintLayout_main = getActivity().findViewById(R.id.constraintLayout_main);
+        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, constraintLayout_main)).get(PhonesViewModel.class);
         phonesViewModel.setListener(this);
 //        phonesViewModel.openDb();
 
