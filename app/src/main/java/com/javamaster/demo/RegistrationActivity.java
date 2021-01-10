@@ -3,9 +3,11 @@ package com.javamaster.demo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,11 +17,13 @@ import com.javamaster.demo.model.api.AbstractAPIListener;
 
 public class RegistrationActivity extends AppCompatActivity {
     private View view;
+    private View parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        parentLayout = findViewById(android.R.id.content).getRootView();
 
         final EditText nameText = findViewById(R.id.textName);
         final EditText loginText = findViewById(R.id.textLogin);
@@ -34,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                hideKeyboard();
                 String name = nameText.getText().toString().trim();
                 String login = loginText.getText().toString().trim();
                 String email = emailText.getText().toString().trim();
@@ -94,5 +99,10 @@ public class RegistrationActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(parentLayout.getWindowToken(), 0);
     }
 }

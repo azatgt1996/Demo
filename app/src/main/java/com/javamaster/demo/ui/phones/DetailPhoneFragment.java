@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -67,12 +68,14 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
                     changePhone.setText("Save");
                     editText_phoneNumber.setEnabled(true);
                     oldPhoneNum = phone.getPhoneNumber();
+                    showKeyboard();
                 } else {
 
                     String phoneNum = editText_phoneNumber.getText().toString().trim();
 
                     if (!phoneNum.equals(oldPhoneNum)) {
                         phone.setPhoneNumber(phoneNum);
+
                         phonesViewModel.changeItem(phone);
                     } else {
                         changePhone.setText("Change");
@@ -88,6 +91,8 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
             deletePhone.setVisibility(View.INVISIBLE);
             changePhone.setVisibility(View.INVISIBLE);
             editText_phoneNumber.setEnabled(true);
+//            editText_phoneNumber.requestFocus();
+            showKeyboard();
         } else {
             int id = bundle.getInt("phoneId");
             String phoneNum = bundle.getString("phoneNumber");
@@ -112,6 +117,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
         String phoneNum = editText_phoneNumber.getText().toString().trim();
         phone = new Phone(id, phoneNum);
 
+        hideKeyboard();
         phonesViewModel.addItem(phone);
     }
 
@@ -131,5 +137,15 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
         changePhone.setText("Change");
         editText_phoneNumber.setEnabled(false);
 //        getActivity().onBackPressed();
+    }
+
+    private void hideKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    private void showKeyboard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }
