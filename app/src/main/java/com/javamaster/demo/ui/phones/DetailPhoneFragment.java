@@ -13,9 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.javamaster.demo.CustomFragmentListener;
 import com.javamaster.demo.FabButtonClick;
@@ -34,16 +32,17 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
     private Phone phone;
     private String oldPhoneNum;
     private Context mContext;
-    private ConstraintLayout constraintLayout_main;
+    private View parentLayout;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
 
-        View view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
+        view = inflater.inflate(R.layout.fragment_detail_phone, container, false);
         ((MainActivity)getActivity()).setListener(this);
 
-        constraintLayout_main = getActivity().findViewById(R.id.constraintLayout_main);
-        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, constraintLayout_main)).get(PhonesViewModel.class);
+        parentLayout = getActivity().findViewById(android.R.id.content).getRootView();
+        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, parentLayout)).get(PhonesViewModel.class);
         phonesViewModel.setListener(this);
 //        phonesViewModel.openDb();
 

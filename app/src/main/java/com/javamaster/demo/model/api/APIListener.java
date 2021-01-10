@@ -14,4 +14,5 @@ public interface APIListener {
     void onPhoneDeleted(String mes);
     void onAllPhonesDeleted(String mes);
     void onPhoneUpdated(String mes);
+    void onFailed(String mes);
 }

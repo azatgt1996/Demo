@@ -20,13 +20,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginText;
     private EditText passwordText;
     private Button loginButton;
+    private View parentLayout;
 
     @Override
     public void onBackPressed() {
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Snackbar.make(getWindow().getDecorView().getRootView(), "Repeat to exit", 2000).show();
+            Snackbar.make(parentLayout, "Repeat to exit", 2000).show();
         }
         back_pressed = System.currentTimeMillis();
     }
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        parentLayout = findViewById(android.R.id.content).getRootView();
         loginText = findViewById(R.id.loginText);
         passwordText = findViewById(R.id.passwordText);
         loginButton = findViewById(R.id.LoginBtn);
@@ -68,9 +70,15 @@ public class LoginActivity extends AppCompatActivity {
                                 util.saveUserInfo(user);
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("fromLoginActivity", true);
                                 startActivity(intent);
                                 finish();
                             }
+                        }
+
+                        @Override
+                        public void onFailed(String mes) {
+                            Snackbar.make(v, mes, 2000).show();
                         }
                     });
                 } else {

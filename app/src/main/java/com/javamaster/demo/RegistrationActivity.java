@@ -58,6 +58,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 });
                                 builder.show();
                             }
+
+                            @Override
+                            public void onFailed(String mes) {
+                                Snackbar.make(view, mes, 2000).show();
+                            }
                         });
                     } else {
                         Snackbar.make(v, "No internet connection!", 2000).show();

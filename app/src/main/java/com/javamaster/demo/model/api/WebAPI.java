@@ -2,7 +2,6 @@ package com.javamaster.demo.model.api;
 
 
 import android.app.Application;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -56,7 +55,7 @@ public class WebAPI implements API {
                         listener.onLogin(user);
                     }
                     catch (JSONException e) {
-                        showException();
+                        listener.onFailed("JSON exception");
                     }
                 }
             };
@@ -64,7 +63,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
+                    listener.onFailed(getErrorMessage(error));
                 }
             };
 
@@ -72,7 +71,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            showException();
+            listener.onFailed("JSON exception");
         }
     }
 
@@ -95,7 +94,7 @@ public class WebAPI implements API {
                         listener.onRegistered(mes);
                     }
                     catch (JSONException e) {
-                        showException();
+                        listener.onFailed("JSON exception");
                     }
                 }
             };
@@ -103,7 +102,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
+                    listener.onFailed(getErrorMessage(error));
                 }
             };
 
@@ -111,7 +110,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            showException();
+            listener.onFailed("JSON exception");
         }
     }
 
@@ -132,7 +131,7 @@ public class WebAPI implements API {
                         listener.onRecovered(mes);
                     }
                     catch (JSONException e) {
-                        showException();
+                        listener.onFailed("JSON exception");
                     }
                 }
             };
@@ -140,7 +139,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
+                    listener.onFailed(getErrorMessage(error));
                 }
             };
 
@@ -148,7 +147,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            showException();
+            listener.onFailed("JSON exception");
         }
     }
 
@@ -165,7 +164,7 @@ public class WebAPI implements API {
                         listener.onPhonesLoaded(phones);
                     }
                 } catch (JSONException e) {
-                    showException();
+                    listener.onFailed("JSON exception");
                 }
             }
         };
@@ -173,7 +172,7 @@ public class WebAPI implements API {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showErrorMessage(error);
+                listener.onFailed(getErrorMessage(error));
             }
         };
 
@@ -207,7 +206,7 @@ public class WebAPI implements API {
                         listener.onPhoneAdded(mes, phoneId);
                     }
                     catch (JSONException e) {
-                        showException();
+                        listener.onFailed("JSON exception");
                     }
                 }
             };
@@ -215,7 +214,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
+                    listener.onFailed(getErrorMessage(error));
                 }
             };
 
@@ -232,7 +231,7 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            showException();
+            listener.onFailed("JSON exception");
         }
     }
 
@@ -248,7 +247,7 @@ public class WebAPI implements API {
                     listener.onPhoneDeleted(mes);
                 }
                 catch (JSONException e) {
-                    showException();
+                    listener.onFailed("JSON exception");
                 }
             }
         };
@@ -256,7 +255,7 @@ public class WebAPI implements API {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showErrorMessage(error);
+                listener.onFailed(getErrorMessage(error));
             }
         };
 
@@ -285,7 +284,7 @@ public class WebAPI implements API {
                     listener.onAllPhonesDeleted(mes);
                 }
                 catch (JSONException e) {
-                    showException();
+                    listener.onFailed("JSON exception");
                 }
             }
         };
@@ -293,7 +292,7 @@ public class WebAPI implements API {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showErrorMessage(error);
+                listener.onFailed(getErrorMessage(error));
             }
         };
 
@@ -326,7 +325,7 @@ public class WebAPI implements API {
                         listener.onPhoneUpdated(mes);
                     }
                     catch (JSONException e) {
-                        showException();
+                        listener.onFailed("JSON exception");
                     }
                 }
             };
@@ -334,7 +333,7 @@ public class WebAPI implements API {
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage(error);
+                    listener.onFailed(getErrorMessage(error));
                 }
             };
 
@@ -351,27 +350,23 @@ public class WebAPI implements API {
             mRequestQueue.add(request);
         }
         catch (JSONException e) {
-            showException();
+            listener.onFailed("JSON exception");
         }
     }
 
-    private void showErrorMessage(VolleyError error) {
+    private String getErrorMessage(VolleyError error) {
         NetworkResponse networkResponse = error.networkResponse;
         if (networkResponse != null && networkResponse.data != null) {
             String jsonError = new String(networkResponse.data);
             try {
                 JSONObject jsonMes = new JSONObject(jsonError);
                 String mes = jsonMes.getString("message");
-                Toast.makeText(mApplication, mes, Toast.LENGTH_SHORT).show();
+                return  mes;
             } catch (JSONException e) {
-                showException();
+                return "JSON exception";
             }
         } else {
-            Toast.makeText(mApplication, "Error response", Toast.LENGTH_SHORT).show();
+            return "Error response";
         }
-    }
-    
-    private void showException() {
-        Toast.makeText(mApplication, "JSON exception", Toast.LENGTH_SHORT).show();
     }
 }

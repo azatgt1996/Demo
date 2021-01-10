@@ -45,4 +45,9 @@ public class AbstractAPIListener implements APIListener {
     public void onPhoneUpdated(String mes) {
 
     }
+
+    @Override
+    public void onFailed(String mes) {
+
+    }
 }

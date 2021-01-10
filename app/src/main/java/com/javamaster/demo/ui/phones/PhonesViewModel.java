@@ -38,6 +38,11 @@ public class PhonesViewModel extends ViewModel {
                     list = (ArrayList<Phone>) phones;
                     mList.setValue(list);
                 }
+
+                @Override
+                public void onFailed(String mes) {
+                    Snackbar.make(mView, mes, 2000).show();
+                }
             });
         } else {
             Snackbar.make(mView, "No internet connection!", 2000).show();
@@ -75,6 +80,11 @@ public class PhonesViewModel extends ViewModel {
 //                    dbManager.deletePhone(phone);
                     Snackbar.make(mView, mes, 2000).show();
                 }
+
+                @Override
+                public void onFailed(String mes) {
+                    Snackbar.make(mView, mes, 2000).show();
+                }
             });
         } else {
             Snackbar.make(mView, "No internet connection!", 2000).show();
@@ -90,6 +100,11 @@ public class PhonesViewModel extends ViewModel {
                     mList.setValue(list);
 
 //                    dbManager.deleteAllPhones();
+                    Snackbar.make(mView, mes, 2000).show();
+                }
+
+                @Override
+                public void onFailed(String mes) {
                     Snackbar.make(mView, mes, 2000).show();
                 }
             });
@@ -111,8 +126,44 @@ public class PhonesViewModel extends ViewModel {
 
 //                        dbManager.insertPhone(phone);
 
-//                        Snackbar.make(mView, mes, 2000).show();
                         customFragmentListener.onBackPressed();
+                        Snackbar.make(mView, mes, 2000).show();
+                    }
+
+                    @Override
+                    public void onFailed(String mes) {
+                        Snackbar.make(mView, mes, 2000).show();
+                    }
+                });
+            } else {
+                Snackbar.make(mView, "No internet connection!", 2000).show();
+            }
+        } else {
+            Snackbar.make(mView, "This phone already exists!", 2000).show();
+        }
+    }
+
+    public void changeItem(final Phone changedPhone) {
+        if (!Phone.isExisted(list, changedPhone.getPhoneNumber())) {
+            if (model.isOnline(mContext)) {
+                if (!validate(changedPhone)) return;
+                model.updatePhone(changedPhone.getId(), changedPhone.getPhoneNumber(), new AbstractAPIListener() {
+                    @Override
+                    public void onPhoneUpdated(String mes) {
+                        int pos = Phone.getIndById(list, changedPhone.getId());
+                        if (pos != -1) {
+                            list.set(pos, new Phone(changedPhone.getId(), changedPhone.getPhoneNumber()));
+                            mList.setValue(list);
+
+//                            dbManager.updatePhone(oldPhone, changedPhone);
+                            Snackbar.make(mView, mes, 2000).show();
+                            customFragmentListener.onCommitted();
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(String mes) {
+                        Snackbar.make(mView, mes, 2000).show();
                     }
                 });
             } else {
@@ -133,32 +184,6 @@ public class PhonesViewModel extends ViewModel {
             return false;
         }
         return true;
-    }
-
-    public void changeItem(final Phone changedPhone) {
-        if (!Phone.isExisted(list, changedPhone.getPhoneNumber())) {
-            if (model.isOnline(mContext)) {
-                if (!validate(changedPhone)) return;
-                model.updatePhone(changedPhone.getId(), changedPhone.getPhoneNumber(), new AbstractAPIListener() {
-                    @Override
-                    public void onPhoneUpdated(String mes) {
-                        int pos = Phone.getIndById(list, changedPhone.getId());
-                        if (pos != -1) {
-                            list.set(pos, new Phone(changedPhone.getId(), changedPhone.getPhoneNumber()));
-                            mList.setValue(list);
-
-//                            dbManager.updatePhone(oldPhone, changedPhone);
-                            Snackbar.make(mView, mes, 2000).show();
-                            customFragmentListener.onCommitted();
-                        }
-                    }
-                });
-            } else {
-                Snackbar.make(mView, "No internet connection!", 2000).show();
-            }
-        } else {
-            Snackbar.make(mView, "This phone already exists!", 2000).show();
-        }
     }
 
     public void setListener(CustomFragmentListener listener){

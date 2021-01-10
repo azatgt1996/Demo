@@ -17,8 +17,8 @@
         android:label="@string/menu_phones"
         tools:layout="@layout/fragment_phones" >
         <action
-            android:id="@+id/action_nav_phones_to_nav_phone_crud"
-            app:destination="@id/nav_phone_crud" />
+            android:id="@+id/action_nav_phones_to_nav_detail_phone"
+            app:destination="@id/nav_detail_phone" />
     </fragment>
 
     <fragment
@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_tools" />
 
     <fragment
-        android:id="@+id/nav_phone_crud"
+        android:id="@+id/nav_detail_phone"
         android:name="com.javamaster.demo.ui.phones.DetailPhoneFragment"
         android:label="@string/menu_phone_crude"
         tools:layout="@layout/fragment_detail_phone" >

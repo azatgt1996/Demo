@@ -37,13 +37,13 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
     private Context mContext;
     private SwipeRefreshLayout sw_refresh;
     private  View root;
-    private ConstraintLayout constraintLayout_main;
+    private View parentLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_phones, container, false);
         sw_refresh = root.findViewById(R.id.sw_refresh);
-        constraintLayout_main = getActivity().findViewById(R.id.constraintLayout_main);
-        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, constraintLayout_main)).get(PhonesViewModel.class);
+        parentLayout = getActivity().findViewById(android.R.id.content).getRootView();
+        phonesViewModel = ViewModelProviders.of(getActivity(), new PhonesViewModelFactory(getActivity().getApplication(), mContext, parentLayout)).get(PhonesViewModel.class);
 //        phonesViewModel.openDb();
         phonesViewModel.init();
 //        phonesViewModel.closeDb();
@@ -71,7 +71,7 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
                 bundle.putString("phoneNumber", phone.getPhoneNumber());
                 bundle.putBoolean("add", false);
 
-                Navigation.findNavController(view).navigate(R.id.action_nav_phones_to_nav_phone_crud, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_nav_phones_to_nav_detail_phone, bundle);
             }
         });
 
@@ -97,7 +97,7 @@ public class PhonesFragment extends Fragment implements FabButtonClick {
     public void onFabClicked() {
         Bundle bundle = new Bundle();
         bundle.putBoolean("add", true);
-        Navigation.findNavController(getView()).navigate(R.id.action_nav_phones_to_nav_phone_crud, bundle);
+        Navigation.findNavController(getView()).navigate(R.id.action_nav_phones_to_nav_detail_phone, bundle);
     }
 
     @Override

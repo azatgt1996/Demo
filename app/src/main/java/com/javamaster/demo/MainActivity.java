@@ -39,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private FabButtonClick fabButtonClick;
     private long back_pressed;
+    private View parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        parentLayout = findViewById(android.R.id.content).getRootView();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_phones:
                         fabButtonClick.onFabClicked();
                         break;
-                    case R.id.nav_phone_crud:
+                    case R.id.nav_detail_phone:
                         fabButtonClick.onFabClicked();
                         break;
                     case R.id.nav_tools:
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_phones,
-                R.id.nav_tools, R.id.nav_logout, R.id.nav_phone_crud)
+                R.id.nav_tools, R.id.nav_logout, R.id.nav_detail_phone)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.nav_phone_crud) {
+                if (destination.getId() == R.id.nav_detail_phone) {
                     if (arguments != null) {
                         if (arguments.getBoolean("add")) {
                             fab.show();
@@ -147,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Bundle arguments = getIntent().getExtras();
+        if (arguments.getBoolean("fromLoginActivity")) {
+            Snackbar.make(parentLayout, "You successfully logged in!", 2000).show();
+        }
     }
 
     public void setListener(FabButtonClick listener){
@@ -162,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
                 if (back_pressed + 2000 > System.currentTimeMillis()) {
                     super.onBackPressed();
                 } else {
-                    Snackbar.make(getWindow().getDecorView().getRootView(), "Repeat to exit", 2000).show();
+                    Snackbar.make(parentLayout, "Repeat to exit", 2000).show();
                 }
                 back_pressed = System.currentTimeMillis();
-            } else if (navController.getCurrentDestination().getId() != R.id.nav_phone_crud) {
+            } else if (navController.getCurrentDestination().getId() != R.id.nav_detail_phone) {
                 fab.hide();
                 super.onBackPressed();
             } else {

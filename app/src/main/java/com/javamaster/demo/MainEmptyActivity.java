@@ -21,6 +21,7 @@ public class MainEmptyActivity extends AppCompatActivity {
 
         if (user != null) {
             activityIntent = new Intent(this, MainActivity.class);
+            activityIntent.putExtra("fromLoginActivity", false);
             final Model model = Model.getInstance(this.getApplication());
             model.setUser(user);
         }
