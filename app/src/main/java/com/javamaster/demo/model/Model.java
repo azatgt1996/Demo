@@ -44,8 +44,8 @@ public class Model {
         mApi.login(login, password, listener);
     }
 
-    public void register(String login, String name, String email, String password, APIListener listener) {
-        mApi.register(login, name, email, password, listener);
+    public void register(String login, String name, String email, String password, int houseId, APIListener listener) {
+        mApi.register(login, name, email, password, houseId, listener);
     }
 
     public void recovery(String login, String email, APIListener listener) {
@@ -70,6 +70,22 @@ public class Model {
 
     public void updatePhone(int idPhone, String phoneNumber, APIListener listener) {
         mApi.updatePhone(idPhone, phoneNumber, listener);
+    }
+
+    public void loadDistricts(APIListener listener) {
+        mApi.getDistricts(listener);
+    }
+
+    public void loadCities(int districtId, APIListener listener) {
+        mApi.getCities(districtId, listener);
+    }
+
+    public void loadStreets(int districtId, int cityId, APIListener listener) {
+        mApi.getStreets(districtId, cityId, listener);
+    }
+
+    public void loadHouses(int districtId, int cityId, int streetId, APIListener listener) {
+        mApi.getHouses(districtId, cityId, streetId, listener);
     }
 
     public User getUser() {

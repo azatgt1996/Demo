@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,6 +35,7 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
     private Context mContext;
     private View parentLayout;
     private View view;
+    private InputMethodManager imm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)  {
@@ -67,6 +68,8 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
                 if (changePhone.getText().toString().equals("Change")) {
                     changePhone.setText("Save");
                     editText_phoneNumber.setEnabled(true);
+                    editText_phoneNumber.requestFocus();
+                    editText_phoneNumber.setSelection(editText_phoneNumber.getText().length());
                     oldPhoneNum = phone.getPhoneNumber();
                     showKeyboard();
                 } else {
@@ -90,9 +93,10 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
         if (bundle.getBoolean("add")) {
             deletePhone.setVisibility(View.INVISIBLE);
             changePhone.setVisibility(View.INVISIBLE);
+            editText_phoneNumber.setText("");
             editText_phoneNumber.setEnabled(true);
             editText_phoneNumber.requestFocus();
-            showKeyboard();
+//            showKeyboard();
         } else {
             int id = bundle.getInt("phoneId");
             String phoneNum = bundle.getString("phoneNumber");
@@ -133,6 +137,16 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        if (getArguments().getBoolean("add")) {
+            imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view.findFocus(), 0);
+        }
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onCommitted() {
         changePhone.setText("Change");
         editText_phoneNumber.setEnabled(false);
@@ -140,12 +154,12 @@ public class DetailPhoneFragment extends Fragment implements FabButtonClick, Cus
     }
 
     private void hideKeyboard() {
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void showKeyboard() {
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

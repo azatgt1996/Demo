@@ -15,6 +15,10 @@ import com.javamaster.demo.R;
 import com.javamaster.demo.model.Model;
 import com.javamaster.demo.model.Phone;
 import com.javamaster.demo.model.User;
+import com.javamaster.demo.model.address.City;
+import com.javamaster.demo.model.address.District;
+import com.javamaster.demo.model.address.House;
+import com.javamaster.demo.model.address.Street;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +43,7 @@ public class WebAPI implements API {
         mModel = model;
     }
 
+    @Override
     public void login(String login, String password, final APIListener listener) {
         String url = BASE_URL + "auth";
         JSONObject jsonObject = new JSONObject();
@@ -76,15 +81,19 @@ public class WebAPI implements API {
     }
 
     @Override
-    public void register(String login, String name, String email, String password, final APIListener listener) {
+    public void register(String login, String name, String email, String password, int houseId, final APIListener listener) {
         String url = BASE_URL + "register";
         JSONObject jsonObject = new JSONObject();
+        JSONObject userObject = new JSONObject();
 
         try {
-            jsonObject.put("login", login);
-            jsonObject.put("name", name);
-            jsonObject.put("email", email);
-            jsonObject.put("password", password);
+            userObject.put("login", login);
+            userObject.put("name", name);
+            userObject.put("email", email);
+            userObject.put("password", password);
+
+            jsonObject.put("houseId", houseId);
+            jsonObject.put("user", userObject);
 
             Response.Listener<JSONObject> successListener = new Response.Listener<JSONObject>() {
                 @Override
@@ -352,6 +361,126 @@ public class WebAPI implements API {
         catch (JSONException e) {
             listener.onFailed("JSON exception");
         }
+    }
+
+    @Override
+    public void getDistricts(final APIListener listener) {
+        String url = BASE_URL + "rajons";
+
+        Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<District> districts = District.getDistricts(response);
+                    if (listener != null) {
+                        listener.onDistrictsLoaded(districts);
+                    }
+                } catch (JSONException e) {
+                    listener.onFailed("JSON exception");
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onFailed(getErrorMessage(error));
+            }
+        };
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener);
+        mRequestQueue.add(request);
+
+    }
+
+    @Override
+    public void getCities(int districtId, final APIListener listener) {
+        String url = BASE_URL + "rajons/" + districtId + "/nasps";
+
+        Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<City> cities = City.getCities(response);
+                    if (listener != null) {
+                        listener.onCitiesLoaded(cities);
+                    }
+                } catch (JSONException e) {
+                    listener.onFailed("JSON exception");
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onFailed(getErrorMessage(error));
+            }
+        };
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener);
+        mRequestQueue.add(request);
+
+    }
+
+    @Override
+    public void getStreets(int districtId, int cityId, final APIListener listener) {
+        String url = BASE_URL + "rajons/" + districtId + "/nasps/" + cityId + "/streets";
+
+        Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<Street> streets = Street.getStreets(response);
+                    if (listener != null) {
+                        listener.onStreetsLoaded(streets);
+                    }
+                } catch (JSONException e) {
+                    listener.onFailed("JSON exception");
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onFailed(getErrorMessage(error));
+            }
+        };
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener);
+        mRequestQueue.add(request);
+
+    }
+
+    @Override
+    public void getHouses(int districtId, int cityId, int streetId, final APIListener listener) {
+        String url = BASE_URL + "rajons/" + districtId + "/nasps/" + cityId + "/streets/" + streetId + "/houses";
+
+        Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<House> houses = House.getHouses(response);
+                    if (listener != null) {
+                        listener.onHousesLoaded(houses);
+                    }
+                } catch (JSONException e) {
+                    listener.onFailed("JSON exception");
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onFailed(getErrorMessage(error));
+            }
+        };
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, successListener, errorListener);
+        mRequestQueue.add(request);
+
     }
 
     private String getErrorMessage(VolleyError error) {

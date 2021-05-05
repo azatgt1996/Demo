@@ -56,11 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch(navController.getCurrentDestination().getId()) {
                     case R.id.nav_phones:
-                        fabButtonClick.onFabClicked();
-                        break;
                     case R.id.nav_detail_phone:
-                        fabButtonClick.onFabClicked();
-                        break;
                     case R.id.nav_tools:
                         fabButtonClick.onFabClicked();
                         break;
